@@ -1,5 +1,5 @@
-NormalParticle ye = new NormalParticle(250,250,90,5,color(255));
 OddballParticle yee = new OddballParticle(250,250,(Math.random()*360),(Math.random()*2+6),color(255,0,0));
+JumboParticle yeee = new JumboParticle(250,250,0,(Math.random()*2+6),color(0,0,255));
 Particle[] yeet = new Particle[250];
 
 void setup() {
@@ -15,10 +15,10 @@ void draw() {
 	background(0);
 	fill(0);
 	ellipse(250,250,5,5);
-	ye.move();
-	ye.show();
 	yee.move();
 	yee.show();
+	yeee.move();
+	yeee.show();
 	for (int i = 0; i < yeet.length; i++) {
 		yeet[i].show();
 		yeet[i].move();
@@ -26,14 +26,11 @@ void draw() {
 	
 }
 
-void mousePressed() {
-	//
-}
 class NormalParticle implements Particle{
 	double myX, myY, myAngle, mySpeed;
 	float mySize;
 	int myColor;
-	public NormalParticle(double x, double y, double angle, double spd, int colr) {
+	NormalParticle(double x, double y, double angle, double spd, int colr) {
 		myX = x;
 		myY = y;
 		myAngle = angle*PI/180*(-1); //radianz
@@ -42,11 +39,11 @@ class NormalParticle implements Particle{
 		mySize = 2;
 	}
 
-	void move() {
+	public void move() {
 		myX += mySpeed * cos((float)(myAngle));
 		myY += mySpeed * sin((float)(myAngle));
 		mySize += 0.05;
-		
+		//mySpeed += 0.01;
 		if (myX < 0 || myX > 500) {
 			myX = (int)(Math.random()*10+245);
 			myY = (int)(Math.random()*10+245);
@@ -63,17 +60,15 @@ class NormalParticle implements Particle{
 		}
 	}
 
-	void show() {
+	public void show() {
 		fill(myColor);
 		ellipse((float)(myX),(float)(myY),mySize,mySize);
 	}
 }
 
 interface Particle{
-
 	public void move();
 	public void show();
-	
 }
 
 class OddballParticle implements Particle { //uses an interface
@@ -109,9 +104,29 @@ class OddballParticle implements Particle { //uses an interface
 		ellipse((float)(myX),(float)(myY),12.5,12.5);
 	}
 }
-/*
-class JumboParticle extends NormalParticle { //uses inheritance
-	
-}
-*/
 
+class JumboParticle extends NormalParticle { //uses inheritance
+	JumboParticle(double x, double y, double angle, double spd, int colr) {
+		super(x,y,angle,spd,colr);
+		/*
+		myX = x; //250
+		myY = y; //250
+		myAngle = angle*PI/180*(-1); //radianz
+		mySpeed = spd;
+		myColor = colr;
+		mySize = 2;
+		*/
+		myX = 250+200*sin((float)(myAngle));
+		myY = 250+200*cos((float)(myAngle));
+	}
+
+	public void show() {
+		fill(myColor);
+		ellipse((float)(myX),(float)(myY),25,25);
+	}
+	public void move() {
+		myX = 250+200*sin((float)(myAngle));
+		myY = 250+200*cos((float)(myAngle));
+		myAngle += PI/60;
+	}
+}
